@@ -40,7 +40,7 @@ jobs:
           # 移动后，文档路由更新日志路径
           LOG_PATH=docs/change-log
           # 当前日期
-          CURRENT_DATE=2025-04-11
+          CURRENT_DATE=2025-04-12
 
           # 判断更新日志是否存在
           if [ -f ${CHANGE_LOG_FILE_PATH}/${CHANGE_LOG_FILE_NAME} ]
@@ -72,7 +72,6 @@ jobs:
               echo "nav:" >> ${LOG_PATH}/${CURRENT_DATE}.md
               echo "  title: 更新日志" >> ${LOG_PATH}/${CURRENT_DATE}.md
               echo "  order: 4" >> ${LOG_PATH}/${CURRENT_DATE}.md
-              echo "title: ${CURRENT_DATE}" >> ${LOG_PATH}/${CURRENT_DATE}.md
               echo "---" >> ${LOG_PATH}/${CURRENT_DATE}.md
               echo ""
 
@@ -163,6 +162,10 @@ jobs:
           prerelease: false
           commitish: ${{ env.LATEST_COMMIT }}
 
+      - name: Debug - Check Outputs
+        run: |
+          echo "TAG_NAME output: ${{ steps.create-and-push-tag.outputs.TAG_NAME }}"
+
   deploy-in-production:
     needs: [create-Tag-Release]
     runs-on: ubuntu-latest
@@ -171,6 +174,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0 # 确保获取所有历史以便正确生成标签
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
