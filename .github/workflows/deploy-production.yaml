@@ -35,14 +35,12 @@ jobs:
           PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }} # 2026-04-06过期
         run: |
           # 更新日志文件路径
-          CHANGE_LOG_FILE_PATH=src
-          CHANGE_LOG_FILE_NAME=change-log.md
+          CHANGE_LOG_FILE_PATH=.change-log
+          CHANGE_LOG_FILE_NAME=index.md
           # 移动后，文档路由更新日志路径
           LOG_PATH=docs/change-log
           # 当前日期
           CURRENT_DATE=$(date +%Y-%m-%d)
-
-          ls $CHANGE_LOG_FILE_PATH
 
           # 判断更新日志是否存在
           if [ -f ${CHANGE_LOG_FILE_PATH}/${CHANGE_LOG_FILE_NAME} ]
@@ -60,26 +58,26 @@ jobs:
 
               echo "🟢 已存在文档路由更新日志，追加内容中..."
 
-              cat ${CHANGE_LOG_FILE_PATH}/${CHANGE_LOG_FILE_NAME} >> ${CHANGE_LOG_FILE_PATH}/${CURRENT_DATE}.md
+              cat ${CHANGE_LOG_FILE_PATH}/${CHANGE_LOG_FILE_NAME} >> ${LOG_PATH}/${CURRENT_DATE}.md
 
-              echo "📓 日志内容已追加到 ${CHANGE_LOG_FILE_PATH}/${CURRENT_DATE}.md 文档中"
+              echo "📓 日志内容已追加到 ${LOG_PATH}/${CURRENT_DATE}.md 文档中"
 
             else
 
               echo "🔴 不存在文档路由更新日志，开始创建..."
 
-              touch ${CHANGE_LOG_FILE_PATH}/${CURRENT_DATE}.md
+              touch ${LOG_PATH}/${CURRENT_DATE}.md
 
-              echo "---" >> ${CHANGE_LOG_FILE_PATH}/${CURRENT_DATE}.md
-              echo "nav:" >> ${CHANGE_LOG_FILE_PATH}/${CURRENT_DATE}.md
-              echo "  title: 更新日志" >> ${CHANGE_LOG_FILE_PATH}/${CURRENT_DATE}.md
-              echo "  order: 4" >> ${CHANGE_LOG_FILE_PATH}/${CURRENT_DATE}.md
-              echo "---" >> ${CHANGE_LOG_FILE_PATH}/${CURRENT_DATE}.md
+              echo "---" >> ${LOG_PATH}/${CURRENT_DATE}.md
+              echo "nav:" >> ${LOG_PATH}/${CURRENT_DATE}.md
+              echo "  title: 更新日志" >> ${LOG_PATH}/${CURRENT_DATE}.md
+              echo "  order: 4" >> ${LOG_PATH}/${CURRENT_DATE}.md
+              echo "---" >> ${LOG_PATH}/${CURRENT_DATE}.md
 
 
-              cat ${CHANGE_LOG_FILE_PATH}/${CHANGE_LOG_FILE_NAME} >> ${CHANGE_LOG_FILE_PATH}/${CURRENT_DATE}.md
+              cat ${CHANGE_LOG_FILE_PATH}/${CHANGE_LOG_FILE_NAME} >> ${LOG_PATH}/${CURRENT_DATE}.md
 
-              echo "📓 已成功创建 ${CHANGE_LOG_FILE_PATH}/${CURRENT_DATE}.md 文档，并写入日志"
+              echo "📓 已成功创建 ${LOG_PATH}/${CURRENT_DATE}.md 文档，并写入日志"
 
             fi
 
