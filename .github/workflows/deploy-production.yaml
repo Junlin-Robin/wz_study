@@ -35,15 +35,17 @@ jobs:
           PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }} # 2026-04-06过期
         run: |
           # 更新日志文件路径
-          FILE_PATH=src
-          FILE_NAME=change-log.md
+          CHANGE_LOG_FILE_PATH=src
+          CHANGE_LOG_FILE_NAME=change-log.md
+          # 移动后，文档路由更新日志路径
+          LOG_PATH=docs/change-log
           # 当前日期
           CURRENT_DATE=$(date +%Y-%m-%d)
 
-          ls $FILE_PATH
+          ls $CHANGE_LOG_FILE_PATH
 
           # 判断更新日志是否存在
-          if [ -f ${FILE_PATH}/${FILE_NAME} ]
+          if [ -f ${CHANGE_LOG_FILE_PATH}/${CHANGE_LOG_FILE_NAME} ]
           then
 
             echo "-------------------------------------------------------------"
@@ -52,21 +54,33 @@ jobs:
 
             echo "-------------------------------------------------------------"
 
-            if [ -f ${FILE_PATH}/${CURRENT_DATE}.md ]
+            # 判断文档路由下更新日志是否已经存在
+            if [ -f ${CHANGE_LOG_FILE_PATH}/${CURRENT_DATE}.md ]
             then
-              cat ${FILE_PATH}/${FILE_NAME} >> ${FILE_PATH}/${CURRENT_DATE}.md
+
+              echo "🟢 已存在文档路由更新日志，追加内容中..."
+
+              cat ${CHANGE_LOG_FILE_PATH}/${CHANGE_LOG_FILE_NAME} >> ${CHANGE_LOG_FILE_PATH}/${CURRENT_DATE}.md
+
+              echo "📓 日志内容已追加到 ${CHANGE_LOG_FILE_PATH}/${CURRENT_DATE}.md 文档中"
+
             else
 
-              touch ${FILE_PATH}/${CURRENT_DATE}.md
+              echo "🔴 不存在文档路由更新日志，开始创建..."
 
-              echo "---" >> ${FILE_PATH}/${CURRENT_DATE}.md
-              echo "nav:" >> ${FILE_PATH}/${CURRENT_DATE}.md
-              echo "  title: 更新日志" >> ${FILE_PATH}/${CURRENT_DATE}.md
-              echo "  order: 4" >> ${FILE_PATH}/${CURRENT_DATE}.md
-              echo "---" >> ${FILE_PATH}/${CURRENT_DATE}.md
+              touch ${CHANGE_LOG_FILE_PATH}/${CURRENT_DATE}.md
+
+              echo "---" >> ${CHANGE_LOG_FILE_PATH}/${CURRENT_DATE}.md
+              echo "nav:" >> ${CHANGE_LOG_FILE_PATH}/${CURRENT_DATE}.md
+              echo "  title: 更新日志" >> ${CHANGE_LOG_FILE_PATH}/${CURRENT_DATE}.md
+              echo "  order: 4" >> ${CHANGE_LOG_FILE_PATH}/${CURRENT_DATE}.md
+              echo "---" >> ${CHANGE_LOG_FILE_PATH}/${CURRENT_DATE}.md
 
 
-              cat ${FILE_PATH}/${FILE_NAME} >> ${FILE_PATH}/${CURRENT_DATE}.md
+              cat ${CHANGE_LOG_FILE_PATH}/${CHANGE_LOG_FILE_NAME} >> ${CHANGE_LOG_FILE_PATH}/${CURRENT_DATE}.md
+
+              echo "📓 已成功创建 ${CHANGE_LOG_FILE_PATH}/${CURRENT_DATE}.md 文档，并写入日志"
+
             fi
 
           else
@@ -106,7 +120,7 @@ jobs:
 
           echo "-------------------------------------------------------------"
 
-          echo "TAG_FILE_PATH=${FILE_PATH}/${FILE_NAME}" >> $GITHUB_ENV
+          echo "TAG_FILE_PATH=${CHANGE_LOG_FILE_PATH}/${CHANGE_LOG_FILE_NAME}" >> $GITHUB_ENV
           echo "NEW_VERSION_TAG=${NEW_VERSION_TAG}" >> $GITHUB_ENV
           echo "::set-output name=TAG_NAME::$NEW_VERSION_TAG"
 
