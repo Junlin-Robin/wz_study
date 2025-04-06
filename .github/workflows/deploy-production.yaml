@@ -40,7 +40,7 @@ jobs:
           # 移动后，文档路由更新日志路径
           LOG_PATH=docs/change-log
           # 当前日期
-          CURRENT_DATE=2025-04-07
+          CURRENT_DATE=2025-04-08
 
           # 判断更新日志是否存在
           if [ -f ${CHANGE_LOG_FILE_PATH}/${CHANGE_LOG_FILE_NAME} ]
@@ -130,6 +130,11 @@ jobs:
           git commit -m 'docs: 归档日志文档文件'
           git push --force
           git push origin master
+
+      - name: Checkout latest master
+        run: |
+          git checkout master
+          git pull origin master      
 
       - name: Read Release Markdown File
         id: Read-Release-File
