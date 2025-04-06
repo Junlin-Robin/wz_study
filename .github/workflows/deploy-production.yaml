@@ -5,12 +5,10 @@ on:
     branches:
       - master
     types: [closed]
-  push:
-    branches:
-      - master
 
 jobs:
   create-Tag-Release:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     env:
       PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }} # 2025-05-19过期
@@ -157,5 +155,3 @@ jobs:
           target-folder: / # 部署根目录
           clean: true # 先清理之前的部署
           token: ${{ secrets.GITHUB_TOKEN }}
-
-          
