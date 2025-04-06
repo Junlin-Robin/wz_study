@@ -187,8 +187,8 @@ jobs:
 
           echo "-------------------------------------------------------------"
 
-          echo "📦 开始对 vite 项目打包..."
-          yarn run build -- --mode $ENV
+          echo "📦 开始对 dumi 项目打包..."
+          yarn run build
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4.3.3
