@@ -5,4 +5,6 @@ export default defineConfig({
     name: '学狂',
     footer: '123 | 223'
   },
+  base: '/wz_study/',
+  publicPath: '/wz_study/'
 });
