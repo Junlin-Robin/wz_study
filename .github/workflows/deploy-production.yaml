@@ -72,6 +72,7 @@ jobs:
               echo "nav:" >> ${LOG_PATH}/${CURRENT_DATE}.md
               echo "  title: 更新日志" >> ${LOG_PATH}/${CURRENT_DATE}.md
               echo "  order: 4" >> ${LOG_PATH}/${CURRENT_DATE}.md
+              echo "title: ${CURRENT_DATE}" >> ${LOG_PATH}/${CURRENT_DATE}.md
               echo "---" >> ${LOG_PATH}/${CURRENT_DATE}.md
               echo ""
 
