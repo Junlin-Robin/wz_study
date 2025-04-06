@@ -40,7 +40,7 @@ jobs:
           # 移动后，文档路由更新日志路径
           LOG_PATH=docs/change-log
           # 当前日期
-          CURRENT_DATE=$(date +%Y-%m-%d)
+          CURRENT_DATE=2025-04-07
 
           # 判断更新日志是否存在
           if [ -f ${CHANGE_LOG_FILE_PATH}/${CHANGE_LOG_FILE_NAME} ]
