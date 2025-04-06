@@ -40,7 +40,7 @@ jobs:
           # 移动后，文档路由更新日志路径
           LOG_PATH=docs/change-log
           # 当前日期
-          CURRENT_DATE=2025-04-08
+          CURRENT_DATE=2025-04-09
 
           # 判断更新日志是否存在
           if [ -f ${CHANGE_LOG_FILE_PATH}/${CHANGE_LOG_FILE_NAME} ]
@@ -131,6 +131,10 @@ jobs:
           git push --force
           git push origin master
 
+          # 获取最新提交的哈希
+          LATEST_COMMIT=$(git rev-parse HEAD)
+          echo "LATEST_COMMIT=$LATEST_COMMIT" >> $GITHUB_ENV
+
       - name: Checkout latest master
         run: |
           git checkout master
@@ -157,6 +161,7 @@ jobs:
           body: ${{ steps.Read-Release-File.outputs.CONTENT }}
           draft: false
           prerelease: false
+          commitish: ${{ env.LATEST_COMMIT }}
 
   deploy-in-production:
     needs: [create-Tag-Release]
