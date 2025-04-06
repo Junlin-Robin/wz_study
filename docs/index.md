@@ -5,9 +5,9 @@ hero:
   description: 监督小被被学习 👀
   actions:
     - text: 开始
-      link: /guide
+      link: /for-master
     - text: 计划
-      link: /
+      link: /study-plan
 features:
   - title: 按时推进
     emoji: 📅

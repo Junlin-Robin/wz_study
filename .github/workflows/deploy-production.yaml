@@ -35,8 +35,8 @@ jobs:
           PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }} # 2026-04-06过期
         run: |
           # 更新日志文件路径
-          FILE_PATH=docs/change-log
-          FILE_NAME=current.md
+          FILE_PATH=src
+          FILE_NAME=change-log.md
           # 当前日期
           CURRENT_DATE=$(date +%Y-%m-%d)
 
@@ -52,16 +52,22 @@ jobs:
 
             echo "-------------------------------------------------------------"
 
-            touch ${FILE_PATH}/${CURRENT_DATE}.md
+            if [ -f ${FILE_PATH}/${CURRENT_DATE}.md ]
+            then
+              cat ${FILE_PATH}/${FILE_NAME} >> ${FILE_PATH}/${CURRENT_DATE}.md
+            else
 
-            echo "---" >> ${FILE_PATH}/${CURRENT_DATE}.md
-            echo "nav:" >> ${FILE_PATH}/${CURRENT_DATE}.md
-            echo "  title: 更新日志" >> ${FILE_PATH}/${CURRENT_DATE}.md
-            echo "  order: 4" >> ${FILE_PATH}/${CURRENT_DATE}.md
-            echo "---" >> ${FILE_PATH}/${CURRENT_DATE}.md
+              touch ${FILE_PATH}/${CURRENT_DATE}.md
+
+              echo "---" >> ${FILE_PATH}/${CURRENT_DATE}.md
+              echo "nav:" >> ${FILE_PATH}/${CURRENT_DATE}.md
+              echo "  title: 更新日志" >> ${FILE_PATH}/${CURRENT_DATE}.md
+              echo "  order: 4" >> ${FILE_PATH}/${CURRENT_DATE}.md
+              echo "---" >> ${FILE_PATH}/${CURRENT_DATE}.md
 
 
-            sed '/^---$/,/^---$/d' ${FILE_PATH}/${FILE_NAME} >> ${FILE_PATH}/${CURRENT_DATE}.md
+              cat ${FILE_PATH}/${FILE_NAME} >> ${FILE_PATH}/${CURRENT_DATE}.md
+            fi
 
           else
 
@@ -75,7 +81,22 @@ jobs:
 
           fi
 
-          NEW_VERSION_TAG=${CURRENT_DATE}
+          TAG_INDEX=1
+          NEW_VERSION_TAG=v_${CURRENT_DATE}_${TAG_INDEX}
+
+          while true
+          do
+            NEW_VERSION_TAG=v_${CURRENT_DATE}_${TAG_INDEX}
+            if git tag | grep -q $NEW_VERSION_TAG
+            then
+              TAG_INDEX=$((TAG_INDEX+1))
+              continue
+            else
+              break
+            fi
+          done
+
+          
 
           echo "当前版本为 ${NEW_VERSION_TAG}"
 
