@@ -40,7 +40,7 @@ jobs:
           # 移动后，文档路由更新日志路径
           LOG_PATH=docs/change-log
           # 当前日期
-          CURRENT_DATE=2025-04-09
+          CURRENT_DATE=2025-04-10
 
           # 判断更新日志是否存在
           if [ -f ${CHANGE_LOG_FILE_PATH}/${CHANGE_LOG_FILE_NAME} ]
@@ -178,7 +178,9 @@ jobs:
           node-version: "20"
 
       - name: checkout tag
-        run: git checkout ${{ needs.create-Tag-Release.outputs.TAG_NAME }}
+        run: |
+          echo "tag 为 ${{ needs.create-Tag-Release.outputs.TAG_NAME }}"
+          git checkout ${{ needs.create-Tag-Release.outputs.TAG_NAME }}
 
       - name: Install Dependencies
         run: yarn
