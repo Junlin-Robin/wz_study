@@ -1,0 +1,160 @@
+name: Create Tag And Deploy In PROD_ENV
+
+on:
+  pull_request:
+    branches:
+      - master
+    types: [closed]
+  push:
+    branches:
+      - master
+
+jobs:
+  create-Tag-Release:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    env:
+      PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }} # 2025-05-19过期
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # 确保获取所有历史以便正确生成标签
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+
+      - name: Setup Git
+        run: |
+          echo "🏠 Setting global git config informations"
+          git config --global user.email "347258143@qq.com"
+          git config --global user.name "Junlin-Robin"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+
+      - name: Create and Push Tag
+        env:
+          PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }} # 2025-05-19过期
+        run: |
+          # 更新日志文件路径
+          FILE_PATH=docs/change-log
+          FILE_NAME=current.md
+          # 当前日期
+          CURRENT_DATE=$(date +%Y-%m-%d)
+
+          # 判断更新日志是否存在
+          if [ -f ${FILE_PATH}/${FILE_NAME} ]
+          then
+
+            echo "-------------------------------------------------------------"
+
+            echo "🚀 存在更新日志，开始提取日志"
+
+            echo "-------------------------------------------------------------"
+
+            sed '/^---$/,/^---$/d' ${FILE_PATH}/${FILE_NAME} > ${FILE_PATH}/${CURRENT_DATE}.md
+
+          else
+
+            echo "-------------------------------------------------------------"
+
+            echo "❌ 无更新日志，退出"
+
+            echo "-------------------------------------------------------------"
+
+            exit code 0
+
+          fi
+
+          NEW_VERSION_TAG=${CURRENT_DATE}
+
+          echo "-------------------------------------------------------------"
+
+          echo "🚀 升级版本类型为：patch，升级后版本号为：$NEW_VERSION_TAG"
+
+          echo "-------------------------------------------------------------"
+
+          echo "TAG_FILE_PATH=${FILE_PATH}/${CURRENT_DATE}.md" >> $GITHUB_ENV
+          echo "NEW_VERSION_TAG=${NEW_VERSION_TAG}" >> $GITHUB_ENV
+          echo "::set-output name=TAG_NAME::$NEW_VERSION_TAG"
+
+          # 推送更新版本号和 tag 到 master 分支
+          echo "🚗 推送更新版本号和 tag 到 master 分支..."
+          git add .
+          git commit -m 'docs: 归档日志文档文件'
+          git push --force
+          git push origin $NEW_VERSION_TAG
+
+      - name: Read Release Markdown File
+        id: Read-Release-File
+        run: |
+          echo "📖 读取更新版本日志文件..."
+          CONTENT=$(cat '.versions/${{env.TAG_FILE_PATH}}')
+          CONTENT="${CONTENT//'%'/'%25'}"
+          CONTENT="${CONTENT//$'\n'/'%0A'}"
+          CONTENT="${CONTENT//$'\r'/'%0D'}"
+          echo "::set-output name=CONTENT::$CONTENT"
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.NEW_VERSION_TAG }}
+          release_name: Release ${{ env.NEW_VERSION_TAG }}
+          body: ${{ steps.Read-Release-File.outputs.CONTENT }}
+          draft: false
+          prerelease: false
+
+  deploy-in-production:
+    needs: [create-Tag-Release]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # 确保获取所有历史以便正确生成标签
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+
+      - name: checkout tag
+        run: git checkout ${{ needs.create-Tag-Release.outputs.TAG_NAME }}
+
+      - name: Install Dependencies
+        run: yarn
+
+      - name: Lint
+        run: yarn lint
+
+      - name: Build
+        id: build-environment
+        run: |
+          echo "🔧 开始配置打包环境..."
+          ENV=production
+          echo "ENV=$ENV" >> $GITHUB_ENV
+
+          OUT_DIR=dist
+          echo "OUT_DIR=$OUT_DIR" >> $GITHUB_ENV
+
+          echo "-------------------------------------------------------------"
+
+          echo "当前环境为：生产环境，打包输出目录为：$OUT_DIR 🏭"
+
+          echo "-------------------------------------------------------------"
+
+          echo "📦 开始对 vite 项目打包..."
+          yarn run build -- --mode $ENV
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4.3.3
+        with:
+          branch: gh-pages # 部署到 gh-pages 分支
+          folder: ${{ env.OUT_DIR }} # 部署目录见配置
+          target-folder: / # 部署根目录
+          clean: true # 先清理之前的部署
+          token: ${{ secrets.GITHUB_TOKEN }}
