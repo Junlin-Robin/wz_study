@@ -7,7 +7,7 @@ on:
     types: [closed]
 
 jobs:
-  create-Tag-Release:
+  create-tag-release:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     env:
@@ -31,6 +31,7 @@ jobs:
           node-version: "20"
 
       - name: Create and Push Tag
+        id: create-and-push-tag
         env:
           PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }} # 2026-04-06过期
         run: |
@@ -40,7 +41,7 @@ jobs:
           # 移动后，文档路由更新日志路径
           LOG_PATH=docs/change-log
           # 当前日期
-          CURRENT_DATE=2025-04-12
+          CURRENT_DATE=2025-04-15
 
           # 判断更新日志是否存在
           if [ -f ${CHANGE_LOG_FILE_PATH}/${CHANGE_LOG_FILE_NAME} ]
@@ -166,8 +167,11 @@ jobs:
         run: |
           echo "TAG_NAME output: ${{ steps.create-and-push-tag.outputs.TAG_NAME }}"
 
+    outputs:
+      TAG_NAME: ${{ steps.create-and-push-tag.outputs.TAG_NAME }}
+
   deploy-in-production:
-    needs: [create-Tag-Release]
+    needs: [create-tag-release]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -183,8 +187,8 @@ jobs:
 
       - name: checkout tag
         run: |
-          echo "tag 为 ${{ needs.create-Tag-Release.outputs.TAG_NAME }}"
-          git checkout ${{ needs.create-Tag-Release.outputs.TAG_NAME }}
+          echo "tag 为 ${{ needs.create-tag-release.outputs.TAG_NAME }}"
+          git checkout ${{ needs.create-tag-release.outputs.TAG_NAME }}
 
       - name: Install Dependencies
         run: yarn
