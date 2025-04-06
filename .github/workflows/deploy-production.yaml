@@ -53,8 +53,6 @@ jobs:
 
             sed '/^---$/,/^---$/d' ${FILE_PATH}/${FILE_NAME} > ${FILE_PATH}/${CURRENT_DATE}.md
 
-            rm -rf ${FILE_PATH}/${FILE_NAME}
-
           else
 
             echo "-------------------------------------------------------------"
@@ -76,6 +74,9 @@ jobs:
           echo "🚀 升级版本类型为：patch，升级后版本号为：$NEW_VERSION_TAG"
 
           echo "-------------------------------------------------------------"
+
+          rm -rf ${FILE_PATH}/${FILE_NAME}
+
 
           echo "TAG_FILE_PATH=${FILE_PATH}/${CURRENT_DATE}.md" >> $GITHUB_ENV
           echo "NEW_VERSION_TAG=${NEW_VERSION_TAG}" >> $GITHUB_ENV
