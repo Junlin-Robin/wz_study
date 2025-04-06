@@ -53,7 +53,7 @@ jobs:
             echo "-------------------------------------------------------------"
 
             # 判断文档路由下更新日志是否已经存在
-            if [ -f ${CHANGE_LOG_FILE_PATH}/${CURRENT_DATE}.md ]
+            if [ -f ${LOG_PATH}/${CURRENT_DATE}.md ]
             then
 
               echo "🟢 已存在文档路由更新日志，追加内容中..."
@@ -73,6 +73,7 @@ jobs:
               echo "  title: 更新日志" >> ${LOG_PATH}/${CURRENT_DATE}.md
               echo "  order: 4" >> ${LOG_PATH}/${CURRENT_DATE}.md
               echo "---" >> ${LOG_PATH}/${CURRENT_DATE}.md
+              echo ""
 
 
               cat ${CHANGE_LOG_FILE_PATH}/${CHANGE_LOG_FILE_NAME} >> ${LOG_PATH}/${CURRENT_DATE}.md
