@@ -1,21 +1,15 @@
 # wz_study
 
-A static site base on [dumi](https://d.umijs.org).
+一个监督俺被被学习项目神奇 👀
 
-## Development
+## 开发环境项目启动配置
 
 ```bash
-# install dependencies
+# 安装依赖（已经安装过不用执行这一步）
 $ yarn install
 
-# start dev server
+# 开启本地服务器
 $ yarn start
-
-# build docs
-$ yarn run build
-
-# Locally preview the production build
-$ yarn run preview
 ```
 
 ## LICENSE
