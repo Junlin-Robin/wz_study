@@ -14,4 +14,6 @@ export default defineConfig({
   base: '/wz_study/',
   publicPath: '/wz_study/',
   favicons: [favicon],
+  extraRehypePlugins: ['rehype-katex'],
+  extraRemarkPlugins: ['remark-math', 'remark-mermaid-dataurl'],
 });
