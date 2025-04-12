@@ -2,6 +2,7 @@
 nav:
   title: 被学 💎
   order: 2
+group: 规范
 title: 说明
 ---
 
