@@ -14,16 +14,44 @@ title: 说明
 
 以下是 `被学 💎` 的文档目录结构，请在相应的文件夹下进行文档编写。如需新增一、二级导航栏，增加对应结构的文件夹，并参考已有文件进行配置～
 
-```
-docs
-└── for-beibie（顶部一级导航：被学）
-    ├── language（顶部二级导航：编程语言）
-    │   ├── demo.md（编程语言-示例文档）
-    │   └── xxx.md（...）
-    └── math（顶部二级导航：数学基础）
-        ├── demo.md（数学基础-示例文档）
-        └── faq.md（...）
-```
+<Tree title="docs">
+  <ul>
+    <li>
+      for-beibie
+      <small>顶部一级导航：被学</small>
+        <ul>
+          <li>
+            language
+            <small>顶部二级导航：编程语言</small>
+            <ul>
+              <li>
+                demo.md
+                <small>编程语言-示例文档</small>
+              </li>
+              <li>
+                xxx.md
+                <small>...</small>
+              </li>
+            </ul>
+          </li>
+          <li>
+            math
+            <small>顶部二级导航：数学基础</small>
+            <ul>
+              <li>
+                demo.md
+                <small>数学基础-示例文档</small>
+              </li>
+              <li>
+                xxx.md
+                <small>...</small>
+              </li>
+            </ul>
+          </li>
+        </ul>
+    </li>
+  </ul>
+</Tree>
 
 ### 开发规则
 

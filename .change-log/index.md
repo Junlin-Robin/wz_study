@@ -1,4 +1,4 @@
-## 更新日志 <Badge type="success">Geist</Badge> <Badge>Robin</Badge>
+## 更新日志 <Badge type="success">Geist</Badge> <Badge>Robin</Badge> <Badge>Robin</Badge>
 
 :::info{title=新增更新特性}
 本期随日常更新新增支持 `mermaid` 和 `$$` 语法。后续会随专栏补充 **Markdown** 插件规则和开发文档。
