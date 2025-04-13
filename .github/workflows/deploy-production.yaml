@@ -174,21 +174,26 @@ jobs:
     needs: [create-tag-release]
     runs-on: ubuntu-latest
     steps:
-      - name: Replace apt-get source
+      - name: Install system dependencies (Chromium)
         run: |
-          sudo sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list
-          sudo apt-get update -y
+          sudo apt-get update && sudo apt-get install -y \
+            chromium \
+            chromium-driver \
+            fonts-ipafont-gothic \
+            fonts-wqy-zenhei \
+            fonts-thai-tlwg \
+            fonts-kacst \
+            fonts-freefont-ttf
+        env:
+          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: "true" # 跳过重复下载
 
-      - name: 🛠️ 安装浏览器核心依赖（关键修复）
+      - name: Configure Puppeteer (无头模式)
         run: |
-          sudo apt-get update && sudo apt-get install -y --no-install-recommends \
-            wget gnupg2 libnss3 libatk-bridge2.0-0 libdrm2 libxkbcommon0 libgbm1 \
-            libasound2-data libasound2-plugins  # 替代旧的 libasound2
-  
-      - name: 🧪 验证浏览器启动（调试）
-        run: |
-          chromium-browser --version
-          node -e "require('puppeteer').launch({headless: true}).then(b=>b.close())"
+          npx playwright install-deps # 安装额外依赖（可选）
+          echo "PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium" >> $GITHUB_ENV
+        env:
+          PUPPETEER_HEADLESS: "new" # 新无头模式（更稳定）
+          CHROME_PATH: /usr/bin/chromium
 
       - name: Checkout code
         uses: actions/checkout@v3
