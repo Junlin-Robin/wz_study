@@ -179,21 +179,16 @@ jobs:
           sudo sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list
           sudo apt-get update -y
 
-      - name: Install system dependencies
+      - name: 🛠️ 安装浏览器核心依赖（关键修复）
         run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            libnss3 \
-            libatk-bridge2.0-0 \
-            libdrm-dev \
-            libxkbcommon-dev \
-            libgbm-dev \
-            libasound2 \
-            libatspi2.0-0 \
-            libxshmfence-dev
-
-      - name: Set browser executable path
-        run: echo "PUPPETEER_EXECUTABLE_PATH=$(which chromium-browser)" >> $GITHUB_ENV
+          sudo apt-get update && sudo apt-get install -y --no-install-recommends \
+            wget gnupg2 libnss3 libatk-bridge2.0-0 libdrm2 libxkbcommon0 libgbm1 \
+            libasound2-data libasound2-plugins  # 替代旧的 libasound2
+  
+      - name: 🧪 验证浏览器启动（调试）
+        run: |
+          chromium-browser --version
+          node -e "require('puppeteer').launch({headless: true}).then(b=>b.close())"
 
       - name: Checkout code
         uses: actions/checkout@v3
@@ -221,6 +216,8 @@ jobs:
         id: build-environment
         env:
           PUPPETEER_HEADLESS: true
+          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: "true"  # 跳过重复下载
+          PUPPETEER_EXECUTABLE_PATH: "/usr/bin/chromium-browser"
         run: |
           echo "🔧 开始配置打包环境..."
           ENV=production
