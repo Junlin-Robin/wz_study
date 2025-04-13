@@ -81,6 +81,10 @@ jobs:
 
               echo "📓 已成功创建 ${LOG_PATH}/${CURRENT_DATE}.md 文档，并写入日志"
 
+              echo "" > ${CHANGE_LOG_FILE_PATH}/${CHANGE_LOG_FILE_NAME}
+
+              echo "🧹 已清理 ${CHANGE_LOG_FILE_PATH}/${CHANGE_LOG_FILE_NAME} 文档内容"
+
             fi
 
           else
@@ -170,6 +174,22 @@ jobs:
     needs: [create-tag-release]
     runs-on: ubuntu-latest
     steps:
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libnss3 \
+            libatk-bridge2.0-0 \
+            libdrm-dev \
+            libxkbcommon-dev \
+            libgbm-dev \
+            libasound2 \
+            libatspi2.0-0 \
+            libxshmfence-dev
+
+      - name: Set browser executable path
+        run: echo "PUPPETEER_EXECUTABLE_PATH=$(which chromium-browser)" >> $GITHUB_ENV
+
       - name: Checkout code
         uses: actions/checkout@v3
         with:
@@ -194,6 +214,8 @@ jobs:
 
       - name: Build
         id: build-environment
+        env:
+          PUPPETEER_HEADLESS: true
         run: |
           echo "🔧 开始配置打包环境..."
           ENV=production
