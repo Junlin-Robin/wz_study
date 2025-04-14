@@ -63,9 +63,14 @@ jobs:
 
               echo "📓 日志内容已追加到 ${LOG_PATH}/${CURRENT_DATE}.md 文档中"
 
+              # 清空文档
+              echo "" > ${CHANGE_LOG_FILE_PATH}/${CHANGE_LOG_FILE_NAME}
+
             else
 
               echo "🔴 不存在文档路由更新日志，开始创建..."
+
+              LOG_FILE_COUNT=$(ls -1 ${LOG_PATH} | wc -l)
 
               touch ${LOG_PATH}/${CURRENT_DATE}.md
 
@@ -73,6 +78,7 @@ jobs:
               echo "nav:" >> ${LOG_PATH}/${CURRENT_DATE}.md
               echo "  title: 更新日志" >> ${LOG_PATH}/${CURRENT_DATE}.md
               echo "  order: 4" >> ${LOG_PATH}/${CURRENT_DATE}.md
+              echo "order: -${LOG_FILE_COUNT}" >> ${LOG_PATH}/${CURRENT_DATE}.md
               echo "---" >> ${LOG_PATH}/${CURRENT_DATE}.md
               echo ""
 

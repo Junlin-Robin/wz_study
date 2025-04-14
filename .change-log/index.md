@@ -1,7 +1,7 @@
-## 更新日志 <Badge type="success">Geist</Badge> <Badge>Robin</Badge> <Badge>Robin</Badge>
+## 更新日志 <Badge>Robin</Badge>
 
-:::warning{title=测试打包构建}
-尝试在 `ubuntu` 虚拟机上安装浏览器测试打包效果
+:::warning{title=修复自动化脚本打包失败问题}
+本期修复方式仅为临时方案，后续会进行优化。
 :::
 
 ### 日志 📓
@@ -10,12 +10,11 @@
 
 ### 特性 🧚‍♂️
 
-- 🚀 尝试解决自动化打包报错，切换阿里云镜像
+- 🚀 自动化脚本中增加安装 **chrome** 浏览器，适配于 **remark-mermaid-dataurl** 插件正常工作。
+
+- 🚀 增加对 **更新日志** 文档的排序功能，新日志会排在最前面。
 
 
 ### 总结 📋
 
-- 暂无
- ---
-
- ----
+- 本期针对 **remark-mermaid-dataurl** 插件在 **ubuntu** 虚拟机上的打包失败问题，临时在自动化脚本中增加安装 **chrome** 浏览器步骤。后续会逐步优化自动化脚本打包策略，并沉淀 **markdown** 插件原理和使用策略。
