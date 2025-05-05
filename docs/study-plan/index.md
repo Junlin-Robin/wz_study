@@ -1,7 +1,7 @@
 ---
 nav:
   title: 学习规划
-  order: 3
+  order: 4
 title: 说明
 ---
 
