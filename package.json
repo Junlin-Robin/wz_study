@@ -37,7 +37,7 @@
     "ahooks": "3.8.5",
     "antd": "5.26.0",
     "lodash": "4.17.21",
-    "nanoid": "^5.1.5",
+    "nanoid": "5.1.5",
     "rehype-katex": "7.0.0",
     "remark-math": "4.0.0",
     "remark-mermaid-dataurl": "3.0.1"
