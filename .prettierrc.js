@@ -1,8 +1,11 @@
 module.exports = {
-  printWidth: 80,
+  printWidth: 120,
   proseWrap: 'never',
   singleQuote: true,
   trailingComma: 'all',
+  tabWidth: 4,
+  singleQuote: true,
+  trailingComma: "all",
   overrides: [
     {
       files: '*.md',
