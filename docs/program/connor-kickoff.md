@@ -53,16 +53,16 @@ group:
 
         |步骤|<span style="display: inline-block; width: 180px">描述</span>|<span style="display: inline-block; width: 185px">状态</span>|状态流转|
         | ---- | ---- | ---- | ---- |
-        |<span style="white-space: nowrap">录入目标</span>|<p style="text-align: justify">**目标** 在业务中对应需实现的实体，在产品设计上对应一组任务的集合，是 **任务**、**里程碑** 等数据挂载对象。</p>|`初始化` `待开始` `进行中` `暂停中` `已结束`|[链接](./weapp-connor.md#131-目标状态流转关系)|
-        |<span style="white-space: nowrap">拆分任务</span>|<p style="text-align: justify">**任务** 是对目标的细致划分，具体到可以执行的 **动作**。任务会关联到具体的目标，一般任务可以是跨天执行的，其下包含多个 **日程计划**，任务是执行维度的实体，所有执行动作都会和任务关联，所有的数据也是挂载在任务维度上。</p>|`待开始` `进行中` `已完成` `未完成` `冻结中`|[链接](./weapp-connor.md#132-任务状态流转关系)|
-        |<span style="white-space: nowrap">规划日程</span>|<p style="text-align: justify">**日程计划** 是任务的最小执行粒度，在设定任务数据时会由用户同步设定。**日程** 在产品定位上是 **任务** 在每日的映射，是承载用户动作的载体。</p>|`待开始` `进行中` `已结束`|[链接](./weapp-connor.md#133-日程状态流转关系)|
-        |<span style="white-space: nowrap">划定里程碑</span> | <p style="text-align: justify">**里程碑** 作为度量目标执行的标志，是 **目标进度** 和 **时间** 维度的组合；前几步已经将 **App** 执行所需初始数据设置完毕，因此 **目标进度** 和 **时间** 的关联关系此刻已经构建完成，用户仅需要在构建好的关系结构中放置对应的 **里程碑**，**App** 会自动保存该 **里程碑** 对应的**目标进度** 快照，作为是否点亮 **里程碑式** 的判断依据。由此可见, **里程碑** 依赖于前置数据的准备，自身不应该单独维护一份数据状态，自然应当作为立项阶段的最后一步动作。</p> |`未点亮` `已达标` `未达标`|[链接](./weapp-connor.md#134-里程碑状态流转关系)|
+        |<span style="white-space: nowrap">录入目标</span>|<p style="text-align: justify">**目标** 在业务中对应需实现的实体，在产品设计上对应一组任务的集合，是 **任务**、**里程碑** 等数据挂载对象。</p>|`初始化` `待开始` `进行中` `暂停中` `已结束`|[链接](./connor-kickoff.md#131-目标状态流转关系)|
+        |<span style="white-space: nowrap">拆分任务</span>|<p style="text-align: justify">**任务** 是对目标的细致划分，具体到可以执行的 **动作**。任务会关联到具体的目标，一般任务可以是跨天执行的，其下包含多个 **日程计划**，任务是执行维度的实体，所有执行动作都会和任务关联，所有的数据也是挂载在任务维度上。</p>|`待开始` `进行中` `已完成` `未完成` `冻结中`|[链接](./connor-kickoff.md#132-任务状态流转关系)|
+        |<span style="white-space: nowrap">规划日程</span>|<p style="text-align: justify">**日程计划** 是任务的最小执行粒度，在设定任务数据时会由用户同步设定。**日程** 在产品定位上是 **任务** 在每日的映射，是承载用户动作的载体。</p>|`待开始` `进行中` `已结束`|[链接](./connor-kickoff.md#133-日程状态流转关系)|
+        |<span style="white-space: nowrap">划定里程碑</span> | <p style="text-align: justify">**里程碑** 作为度量目标执行的标志，是 **目标进度** 和 **时间** 维度的组合；前几步已经将 **App** 执行所需初始数据设置完毕，因此 **目标进度** 和 **时间** 的关联关系此刻已经构建完成，用户仅需要在构建好的关系结构中放置对应的 **里程碑**，**App** 会自动保存该 **里程碑** 对应的**目标进度** 快照，作为是否点亮 **里程碑式** 的判断依据。由此可见, **里程碑** 依赖于前置数据的准备，自身不应该单独维护一份数据状态，自然应当作为立项阶段的最后一步动作。</p> |`未点亮` `已达标` `未达标`|[链接](./connor-kickoff.md#134-里程碑状态流转关系)|
 
-    -   **执行**：为了进一步提升用户的 **感知** 和 **使用体验**，**Connor** 在执行阶段设计有大量的用户交互动作，以增强用户使用体感和对本产品的依赖。秉持着以 **用户动作** 代替 **用户思考** 的设计思想，**Connor** 参照日常行为模式，从用户真实需求出发，将复杂的思考和输入过程简化成日常操作，以 `引导`、`选择`、`确认`、`点击` 等方式建立起来用户的行为链条。**执行** 阶段整体 [流程图](./weapp-connor.md#135-connor-执行流程) 如下。
+    -   **执行**：为了进一步提升用户的 **感知** 和 **使用体验**，**Connor** 在执行阶段设计有大量的用户交互动作，以增强用户使用体感和对本产品的依赖。秉持着以 **用户动作** 代替 **用户思考** 的设计思想，**Connor** 参照日常行为模式，从用户真实需求出发，将复杂的思考和输入过程简化成日常操作，以 `引导`、`选择`、`确认`、`点击` 等方式建立起来用户的行为链条。**执行** 阶段整体 [流程图](./connor-kickoff.md#135-connor-执行流程) 如下。
 
         |<span style="display: inline-block; width: 30px; color: gray">序号</span>|执行时间|执行内容|数据状态流转|
         |--|--|--|--|
-        |<span style="color: gray">1</span>|每日零点|根据当日用户的所有任务，排除冻结中任务、合并延期任务后，自动生成当天的日程规划。生成成功后，下发通知用户。此期间，用户可以自由调整日程规划，删除、追加、调整执行顺序等，每次调整后会重新生成当日日程。|1. 调整顺序，当日生成的规划执行结果不变，具体执行时间段顺序切换。<br/>2. 删除当日某个日程，从当日日程中剔除，任务维度上会记录数据<br/>3. |
+        |<span style="color: gray">1</span>|每日零点|根据用户所有任务，排除冻结中、已结束的任务，自动生成当天的日程规划；生成成功后，下发通知用户。此期间，用户可以自由调整日程规划，删除、追加、调整执行顺序等，每次调整后会重新生成当日日程并自动记录一条操作日志。|1. 改变顺序，当日生成的规划执行结果不变，具体执行时间段顺序切换。<br/>2. 删除当日某个日程，会重新生成、下发当日日程、记录操作日志，任务维度的数据会自动去除当日执行计划。<br/>3. 调整当日某个日程，进入二级页面让用户主动选择具体日期和时间段。可选的日期范围是 **T+1** 到 **任务结束的最后一天**，可选的时间为当日预期剩余的时间段（暂不支持拆分时间段执行）。|
 
     -   **复盘**：由于前两个生命周期中，app 收集到了较多的数据，因此
 
@@ -184,7 +184,7 @@ class e3 animateRed
 class e4 animateRed
 `
 
-export default () => <FullScreenMermaid mermaid={mermaid} title='123' />
+export default () => <FullScreenMermaid mermaid={mermaid} />
 ```
 <br />
 
@@ -217,60 +217,36 @@ block-beta
 
 原型图杂剧这里
 
----
-
-### 2. 技术路线
-
-本项目拟基于 `微信小程序` 进行开发，使用原生框架进行代码编写，三方组件使用 `Vant/weapp`，后端部分采用微信的云开发，语言为 `NodeJs`，数据苦使用 `Mysql`，
-
-```mermaid
-graph LR
-a --> b
-```
-
-#### 2.1 技术栈
-
-#### 2.2 技术架构
-
-#### 2.3 前端方案设计
-
-#### 2.4 后端方案设计
-
-#### 2.5 库表设计
-
-
-### 3. 项目管理
-
-<!--
-```jsx
+```tsx
 /**
- * title: demo 标题
  * inline: true
  */
-import React, {useEffect} from 'react';
+import FullScreenMermaid from '@/components/full-screen-mermaid'
 
-export default () => {
-  useEffect(() => {
-    // 动态加载外部脚本
-    const list = document.querySelectorAll('img');
-    console.log('list', list)
-    for(let i = 0; i < list.length; i++) {
-      list[i].addEventListener('click', function() {
-        console.log(111)
-        this.classList.toggle('fullscreen');
-      })
+const mermaid = `
+erDiagram
+    CAR ||--o{ NAMED-DRIVER : allows
+    CAR {
+        string registrationNumber PK
+        string make
+        string model
+        string[] parts
     }
+    PERSON ||--o{ NAMED-DRIVER : is
+    PERSON {
+        string driversLicense PK "The license #"
+        string(99) firstName "Only 99 characters are allowed"
+        string lastName
+        string phone UK
+        int age
+    }
+    NAMED-DRIVER {
+        string carRegistrationNumber PK, FK
+        string driverLicence PK, FK
+    }
+    MANUFACTURER only one to zero or more CAR : makes
 
-    return () => {
-      for(let i = 0; i < list.length; i++) {
-      list[i].removeEventListener('click', function() {
-        console.log(111)
-        this.classList.toggle('fullscreen');
-      })
-    }
-    }
-  }, []);
-  return <></>
-};
-``` -->
+`
 
+export default () => <FullScreenMermaid mermaid={mermaid} />
+```

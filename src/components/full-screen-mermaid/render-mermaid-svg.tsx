@@ -115,8 +115,6 @@ const RenderMermaidSVG = forwardRef<RenderMermaidSvgRef, IProps>((props, ref) =>
         canvas.style.width = `${width}px`;
         canvas.style.height = `${height}px`;
 
-        console.log({width, height}, dpr)
-
         // 5. 调整绘图上下文的比例
         const ctx = canvas.getContext('2d');
         if (ctx) {
