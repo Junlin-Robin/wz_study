@@ -130,7 +130,11 @@ const RenderMermaidSVG = forwardRef<RenderMermaidSvgRef, IProps>((props, ref) =>
         // 获取Canvas的Blob数据
         const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png', 1.0));
 
-        // 创建ClipboardItem对象
+        // 创建ClipboardItem对象，兼容写法，确保在安全环境下使用
+        if (!window.ClipboardItem || !window.isSecureContext) {
+            //弹窗提示，直接渲染图片，让用户右键保存
+            throw new Error('当前环境不支持复制图片到剪贴板，请使用https等安全环境');
+        }
         const clipboardItem = new ClipboardItem({ 'image/png': blob as Blob });
 
         // 写入剪贴板
