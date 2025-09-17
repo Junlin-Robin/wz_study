@@ -21,7 +21,7 @@ group:
 
 ### 1. 产品架构
 
-本产品的终极目的是帮助用户更加高效 <span style="font-weight: 600; color: orange">制定计划、管理目标、掌控时间</span>，在综合考察目前市场已有的竞品（`Vis`, `目标地图`）等，发现普遍存在共性的使用痛点，列举如下。
+本产品的终极目的是帮助用户更加高效 <span style="font-weight: 600; color: orange">制定计划 📝、管理目标 🎯、掌控时间 ⏰</span>，在综合考察目前市场已有的竞品（`Vis`, `目标地图`）等，发现普遍存在共性的使用痛点，列举如下。
 
 | 产品 | 平台 | 版本 | <span style="display: inline-block; width: 130px">设计</span> | <span style="display: inline-block; width: 260px">痛点</span> |
 | :--: | :--: | :--: | :--: | :-- |
@@ -157,24 +157,32 @@ WAITING@{ shape: hourglass, label: "Collate" }
     modify --> |任意当日日程<br>到达开始时间前5min| alarm([⏰<br>提醒弹窗])
     alarm --- WAITING
     subgraph notOperate[无操作]
-      WAITING --> qq[结束页]
+      WAITING --> finishTask[结束当前日程]
+      finishTask --> |记录日程状态|status[日程未执行]
     end
-    alarm --> poi
-    subgraph overDo[超期完成]
-    poi
+    alarm --> |日程到达开始时间后\n点击开始按钮|notInTimeStart[当前日程开始]
+    subgraph outDateOperate[延迟打卡]
+      notInTimeStart --> |点击结束|modifyTaskDetailPage[进入日程详情页\n修改日程执行情况]
+      notInTimeStart --> |达到结束时间\n自动记录日程执行详情|finishNotInTimeTask[日程已结束]
+      modifyTaskDetailPage --> finishNotInTimeTask
     end
-    alarm --> poi2
-    subgraph lessDo[少于完成]
-    poi2
-    end
-    alarm e2@--> |点击开始| c[开始态]
+    alarm --> |点击开始| normal[当前日程开始]
     subgraph regular[常规路径]
-      c e3@--> |点击结束<br>Or<br>达到结束时间| wait[结束页]
-      wait --> iiud
+      normal --> |点击结束| finishNormalTaskPage[进入日程详情页\n修改日程执行情况]
+      normal --> |达到结束时间\n自动记录日程执行详情|finishNormalTask[日程已结束]
+      finishNormalTaskPage --> finishNormalTask
+    end
+    status --> alarm2[每日日程结束卡片]
+    finishNotInTimeTask --> alarm2
+    finishNormalTask --> alarm2
+    alarm2 --> |点击调整按钮|detailPage[每日日程调整页面]
+    subgraph endDay[调整每日日程执行情况]
+      direction TB
+      detailPage --> syncTasks[同步任务进度]
     end
   end
 FC e1@--> |每日零点| timeLine
-timeLine --> |当日最后日程结束| END
+timeLine --> END
 e1@{ animate: true }
 classDef animateBlue stroke: #00f, stroke-dasharray: 9\,5,stroke-dashoffset: 900,animation: dash 25s linear infinite;
 class a1 animateBlue
@@ -192,7 +200,7 @@ export default () => <FullScreenMermaid mermaid={mermaid} />
 
 #### 1.4 产品整体流程
 
-**Connor** 作为一个
+**Connor** 是一个目标 🎯 实现App，核心能力在于帮助通过简单、程序的指令，利用app作为，用户实现更高效的目标达成。
 
 #### 1.5 架构图
 
