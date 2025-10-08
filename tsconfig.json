@@ -5,8 +5,13 @@
     "esModuleInterop": true,
     "baseUrl": "./",
     "paths": {
-      "@@/*": [".dumi/tmp/*"]
-    }
+      "@@/*": [".dumi/tmp/*"],
+      "@/*": ["src/*"]
+    },
+    "typeRoots": [
+      "node_modules/@types",
+      "typing.d.ts" // 指向你的类型声明文件
+    ]
   },
-  "include": [".dumirc.ts"]
+  "include": [".dumirc.ts", "src/*", "typing.d.ts"]
 }

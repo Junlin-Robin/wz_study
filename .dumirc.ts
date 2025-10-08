@@ -13,6 +13,9 @@ export default defineConfig({
   },
   base: '/wz_study/',
   publicPath: '/wz_study/',
+  alias: {
+    '@': require('path').resolve(__dirname, 'src'),
+  },
   favicons: [favicon],
   extraRehypePlugins: ['rehype-katex'],
   extraRemarkPlugins: ['remark-math', 'remark-mermaid-dataurl'],

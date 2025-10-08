@@ -4,7 +4,7 @@ nav:
   order: 2
 group:
   title: mysql
-  order: 1
+  order: 2
 title: 学习文档
 ---
 

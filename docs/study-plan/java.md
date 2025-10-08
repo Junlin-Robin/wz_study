@@ -1,4 +1,6 @@
 ---
 title: Java
-group: 编程语言
+group:
+  title: 编程语言
+  order: 2
 ---
