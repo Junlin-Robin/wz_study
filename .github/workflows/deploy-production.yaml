@@ -63,7 +63,7 @@ jobs:
 
               echo "📓 日志内容已追加到 ${LOG_PATH}/${CURRENT_DATE}.md 文档中"
 
-              TAG_FILE=$(cat ${LOG_PATH}/${CURRENT_DATE}.md)
+              TAG_FILE=$(cat "${LOG_PATH}/${CURRENT_DATE}.md")
 
               # 清空文档
               echo "" > ${CHANGE_LOG_FILE_PATH}/${CHANGE_LOG_FILE_NAME}
@@ -92,7 +92,7 @@ jobs:
 
               echo "📓 已成功创建 ${LOG_PATH}/${CURRENT_DATE}.md 文档，并写入日志"
 
-              TAG_FILE=$(cat ${LOG_PATH}/${CURRENT_DATE}.md)
+              TAG_FILE=$(cat "${LOG_PATH}/${CURRENT_DATE}.md")
 
               echo "" > ${CHANGE_LOG_FILE_PATH}/${CHANGE_LOG_FILE_NAME}
 
@@ -197,7 +197,6 @@ jobs:
             fonts-thai-tlwg \
             fonts-kacst \
             fonts-freefont-ttf \
-            # 补充 Chromium 核心依赖
             libatk1.0-0 \
             libatk-bridge2.0-0 \
             libcups2 \
