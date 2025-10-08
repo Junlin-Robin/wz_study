@@ -63,6 +63,13 @@ jobs:
 
               echo "📓 日志内容已追加到 ${LOG_PATH}/${CURRENT_DATE}.md 文档中"
 
+              TAG_FILE=$(cat ${LOG_PATH}/${CURRENT_DATE}.md)
+
+              # 清空文档
+              echo "" > ${CHANGE_LOG_FILE_PATH}/${CHANGE_LOG_FILE_NAME}
+
+              echo "🧹 已清理 ${CHANGE_LOG_FILE_PATH}/${CHANGE_LOG_FILE_NAME} 文档内容"
+
             else
 
               echo "🔴 不存在文档路由更新日志，开始创建..."
@@ -84,6 +91,12 @@ jobs:
               cat ${CHANGE_LOG_FILE_PATH}/${CHANGE_LOG_FILE_NAME} >> ${LOG_PATH}/${CURRENT_DATE}.md
 
               echo "📓 已成功创建 ${LOG_PATH}/${CURRENT_DATE}.md 文档，并写入日志"
+
+              TAG_FILE=$(cat ${LOG_PATH}/${CURRENT_DATE}.md)
+
+              echo "" > ${CHANGE_LOG_FILE_PATH}/${CHANGE_LOG_FILE_NAME}
+
+              echo "🧹 已清理 ${CHANGE_LOG_FILE_PATH}/${CHANGE_LOG_FILE_NAME} 文档内容"
 
             fi
 
@@ -124,7 +137,7 @@ jobs:
 
           echo "-------------------------------------------------------------"
 
-          echo "TAG_FILE_PATH=${CHANGE_LOG_FILE_PATH}/${CHANGE_LOG_FILE_NAME}" >> $GITHUB_ENV
+          echo $TAG_FILE >> $GITHUB_ENV
           echo "NEW_VERSION_TAG=${NEW_VERSION_TAG}" >> $GITHUB_ENV
           echo "TAG_NAME=${NEW_VERSION_TAG}" >> $GITHUB_OUTPUT
 
@@ -148,16 +161,11 @@ jobs:
         id: Read-Release-File
         run: |
           echo "📖 读取更新版本日志文件..."
-          CONTENT=$(cat '${{env.TAG_FILE_PATH}}')
+          CONTENT=${{env.TAG_FILE}}
           CONTENT="${CONTENT//'%'/'%25'}"
           CONTENT="${CONTENT//$'\n'/'%0A'}"
           CONTENT="${CONTENT//$'\r'/'%0D'}"
           echo "::set-output name=CONTENT::$CONTENT"
-
-          # 清空文档
-          echo "" > ${{env.TAG_FILE_PATH}}
-
-          echo "🧹 已清理 ${{env.TAG_FILE_PATH}} 文档内容"
 
       - name: Create Release
         id: create_release
@@ -188,7 +196,20 @@ jobs:
             fonts-wqy-zenhei \
             fonts-thai-tlwg \
             fonts-kacst \
-            fonts-freefont-ttf
+            fonts-freefont-ttf \
+            # 补充 Chromium 核心依赖
+            libatk1.0-0 \
+            libatk-bridge2.0-0 \
+            libcups2 \
+            libxkbcommon0 \
+            libxcomposite1 \
+            libxdamage1 \
+            libxfixes3 \
+            libxrandr2 \
+            libgbm1 \
+            libpango-1.0-0 \
+            libcairo2 \
+            libasound2
         env:
           PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: "true" # 跳过重复下载
 
