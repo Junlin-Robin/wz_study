@@ -157,7 +157,7 @@ jobs:
         id: Read-Release-File
         run: |
           echo "📖 读取更新版本日志文件..."
-          CONTENT=${{env.TAG_FILE}}
+          CONTENT=$(cat "${{env.TAG_FILE}}")
           CONTENT="${CONTENT//'%'/'%25'}"
           CONTENT="${CONTENT//$'\n'/'%0A'}"
           CONTENT="${CONTENT//$'\r'/'%0D'}"
