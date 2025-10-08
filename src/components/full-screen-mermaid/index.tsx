@@ -56,7 +56,7 @@ export default function FullScreenMermaid(props: IProps) {
             message.success('复制成功');
         } catch (error) {
             message.destroy(messageId);
-            message.error(error.message || error.msg || '复制失败，请稍后重试');
+            message.error((error as Error).message || (error as { msg?: string }).msg || '复制失败，请稍后重试');
         }
     });
 

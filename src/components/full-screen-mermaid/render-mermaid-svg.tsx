@@ -23,7 +23,7 @@ export interface RenderMermaidSvgRef {
  * @param svgString svg代码
  * @returns isValid-是否有效属性；width-宽度；height-高度
  */
-function parseSvgAttributes(svgString) {
+function parseSvgAttributes(svgString: string) {
     try {
         const parser = new DOMParser();
         const doc = parser.parseFromString(svgString, 'image/svg+xml');

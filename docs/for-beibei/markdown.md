@@ -4,6 +4,7 @@ nav:
   order: 2
 group: 基础教程
 title: Markdown 语法
+order: 1
 ---
 
 # 保姆级教程 <Badge>Markdown</Badge>
