@@ -208,13 +208,22 @@ jobs:
         env:
           PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: "true" # 跳过重复下载
 
-      - name: Configure Puppeteer (无头模式)
+
+      - name: Confirm Chromium path & set env
         run: |
-          npx playwright install-deps # 安装额外依赖（可选）
-          echo "PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium" >> $GITHUB_ENV
-        env:
-          PUPPETEER_HEADLESS: "new" # 新无头模式（更稳定）
-          CHROME_PATH: /usr/bin/chromium
+          CHROMIUM_PATH=$(which chromium-browser || which chromium)
+          echo "PUPPETEER_EXECUTABLE_PATH=$CHROMIUM_PATH" >> $GITHUB_ENV
+          echo "Chromium 路径: $CHROMIUM_PATH"
+
+      - name: Test Chromium launch
+        run: |
+            $PUPPETEER_EXECUTABLE_PATH \
+            --no-sandbox \
+            --disable-gpu \
+            --headless=new \
+            --disable-dev-shm-usage \
+            --dump-dom https://example.com \
+            | grep -i "<title>" && echo "Chromium 启动成功" || exit 1
 
       - name: Checkout code
         uses: actions/checkout@v3
@@ -236,14 +245,15 @@ jobs:
           echo "已切换到 ${{ needs.create-tag-release.outputs.TAG_NAME }} 🟢"
 
       - name: Install Dependencies
-        run: yarn
+        run: yarn install --frozen-lockfile
 
       - name: Build
         id: build-environment
         env:
-          PUPPETEER_HEADLESS: true
+          # 确保 Puppeteer 环境变量生效
+          PUPPETEER_EXECUTABLE_PATH: ${{ env.PUPPETEER_EXECUTABLE_PATH }}
+          PUPPETEER_HEADLESS: "new"
           PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: "true"  # 跳过重复下载
-          PUPPETEER_EXECUTABLE_PATH: "/usr/bin/chromium-browser"
         run: |
           echo "🔧 开始配置打包环境..."
           ENV=production
