@@ -242,7 +242,7 @@ block-beta
 
 ![test](../assets/img/欢迎页.png)
 
-[原型设计链接](https://modao.cc/proto/ZClaTiWustgjfnTX5U7V/sharing?view_mode=read_only)
+[原型设计链接](https://modao.cc/proto/ZClaTiWustgjfnTX5U7V/sharing?view_mode=read_only&screen=rbpUg3ItG65m3IeDP)
 
 
 <span style="color: #999; font-weight: 300; font-style: italic">原型图待补充...</span>
