@@ -1,5 +1,5 @@
 
-## 更新日志-示例 <Badge>更新人</Badge>
+## Connor立项 <Badge>Robin</Badge>
 
 :::success{title=Connor项目立项}
 基于微信小程序的目标完成小程序Connor立项完成，进入原型设计和产品方案编写阶段。
