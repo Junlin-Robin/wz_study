@@ -137,7 +137,7 @@ jobs:
 
           echo "-------------------------------------------------------------"
 
-          echo "TAG_FILE=${TAG_FILE}" >> $GITHUB_ENV
+          echo "TAG_FILE=\"${TAG_FILE}\"" >> $GITHUB_ENV
           echo "NEW_VERSION_TAG=${NEW_VERSION_TAG}" >> $GITHUB_ENV
           echo "TAG_NAME=${NEW_VERSION_TAG}" >> $GITHUB_OUTPUT
 
