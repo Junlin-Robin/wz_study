@@ -73,8 +73,9 @@ group:
 #### 1.2.2 设计思想
 
 -   **设计思想**：**高效率** 是一个简单的公式：
+
     >   $$
-    >     Efficiency(效率) = Plan(计划) + Action(行为)
+    >     Efficiency = Plan + Action
     >   $$
 
     这个公式可以简单记做 $E = P + A$，**高效** 是 <span style="color: orange; font-weight: 600">提前的计划</span> ➕ <span style="color: orange; font-weight: 600">优秀的执行</span>。**Connor** 继承了这个思想，以 **Less Is More** 为原则，基于 `Action` ➡️ `Think` 的思想，贴合用户日常习惯，不额外增加用户的动作和思考，尽力减少用户使用中的 **理解成本** 和 **操作路径**，降低用户的心智负担。
