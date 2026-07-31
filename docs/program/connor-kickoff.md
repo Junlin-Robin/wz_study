@@ -241,9 +241,9 @@ block-beta
 
 ### 1.6 原型图
 
-![test](../assets/img/欢迎页.png)
+![test](../assets/img/connor-homepage.png)`
 
-[原型设计链接](https://modao.cc/proto/ZClaTiWustgjfnTX5U7V/sharing?view_mode=read_only&screen=rbpUg3ItG65m3IeDP)
+[原型设计链接](https://modao.cc/proto/4RAZbJ3t55p7e86ozMFxu/sharing?view_mode=device)
 
 
 <span style="color: #999; font-weight: 300; font-style: italic">原型图待补充...</span>

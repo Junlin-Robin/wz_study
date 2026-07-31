@@ -5,6 +5,9 @@ import { nanoid } from 'nanoid';
 import { useRef, useState } from 'react';
 import FullScreenView from '../full-screen-view';
 import RenderMermaidSVG, { type RenderMermaidSvgRef } from './render-mermaid-svg';
+import { isMobileDevice } from '../../utils/device';
+
+const isMobile = isMobileDevice();
 
 export interface IProps {
     /**
@@ -60,7 +63,11 @@ export default function FullScreenMermaid(props: IProps) {
         }
     });
 
-    return (
+    return isMobile ? (
+        <div style={{ backgroundColor: '#fff' }}>
+            <RenderMermaidSVG mermaidCode={mermaid} ref={renderMermaidSVGRef} />
+        </div>
+    ) : (
         <>
             <Popover
                 content={

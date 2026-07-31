@@ -53,8 +53,9 @@ export function reCalculateTransformWhenOriginChanged(params: {
     lastTranslate: Position;
     zoomNode: HTMLElement;
     scale: number;
+    initalDomClientRect: DOMRect | null;
 }) {
-    const { wheelEvent, lastOrigin, lastTranslate, zoomNode, scale } = params;
+    const { wheelEvent, lastOrigin, lastTranslate, zoomNode, scale, initalDomClientRect } = params;
     //没有传入操作的DOM节点，直接返回传入值，不做计算
     if (!zoomNode) {
         return {
@@ -66,5 +67,5 @@ export function reCalculateTransformWhenOriginChanged(params: {
 
     const mousePosition = { x: wheelEvent.clientX, y: wheelEvent.clientY, deltaY: wheelEvent.deltaY };
 
-    return calculateOriginAndTranslate(mousePosition, nodeClientInfo, scale, lastOrigin, lastTranslate);
+    return calculateOriginAndTranslate(mousePosition, nodeClientInfo, scale, lastOrigin, lastTranslate, initalDomClientRect);
 }

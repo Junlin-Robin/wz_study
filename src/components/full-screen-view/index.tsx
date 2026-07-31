@@ -4,12 +4,13 @@ import { CloseOutlined, DownloadOutlined, PicCenterOutlined, ZoomInOutlined, Zoo
 
 import type { FullScreenViewProps } from './type';
 
-import { useMemoizedFn, useMount } from 'ahooks';
+import { useMemoizedFn, useMount, useThrottleFn } from 'ahooks';
 import { Button, Divider, message, Typography } from 'antd';
 import styles from './index.module.less';
 
 import { handleMouseWheelEvent, reCalculateTransformWhenOriginChanged } from './calculate';
 import { SCALE_FACTOR, SCALE_MAX_RATIO, SCALE_MIN_RATIO } from './constants';
+import { isDEV } from '../../utils/env';
 
 export default function FullScreenView(props: FullScreenViewProps) {
     const { children, options, title, onClose, copy } = props;
@@ -36,14 +37,36 @@ export default function FullScreenView(props: FullScreenViewProps) {
     const [translate, setTranslate] = useState({ x: 0, y: 0 });
     //回调计数器，用于重置mouseWheeling
     const timer = useRef<any | null>(null);
+    //初始挂载时获取一次节点位置信息
+    const initalDomClientRect = useRef<DOMRect | null>(null);
 
-    useMount(() => {
-        const nodePosition = ref.current?.getBoundingClientRect();
-        //设置缩放中心点
-        setTransferOrigin({ x: (nodePosition?.width ?? 0) / 2, y: (nodePosition?.height ?? 0) / 2 });
+    const intervalGetBoundingClientRect = useMemoizedFn(
+        (dom?: HTMLElement | null): Promise<DOMRect | null> => new Promise((resolve, reject) => {
+            if (!dom) return reject(new Error('未指定DOM元素，无法获取元素位置信息'));
+            let intervalTimer: null | number | NodeJS.Timeout = null;
+            intervalTimer = setInterval(() => {
+                const nodePosition = dom?.getBoundingClientRect();
+                if (!nodePosition?.height || nodePosition?.height === 0) {
+                    return
+                }
+                resolve(nodePosition)
+                intervalTimer && clearInterval(intervalTimer)
+            }, 100)
+        })
+    )
+
+    useMount(async () => {
+        try {
+            const nodePosition = await intervalGetBoundingClientRect(ref.current)
+            nodePosition && (initalDomClientRect.current = nodePosition)
+            //设置缩放中心点，初始化为图片中心点
+            setTransferOrigin({ x: (nodePosition?.width ?? 0) / 2, y: (nodePosition?.height ?? 0) / 2 });
+        } catch (error) {
+            isDEV && console.warn(error.message)
+        }
     });
 
-    const handleMouseWheelEventInner = useMemoizedFn((event: WheelEvent) => {
+    const { run: handleMouseWheelEventInner } = useThrottleFn((event: WheelEvent) => {
         if (!mouseWheeling.current) {
             //第一次滑动事件，这时，仅调整translate，不做放大效果
             const { newOrigin, newTranslatePosition } = reCalculateTransformWhenOriginChanged({
@@ -52,6 +75,7 @@ export default function FullScreenView(props: FullScreenViewProps) {
                 lastTranslate: translate,
                 scale,
                 zoomNode: ref.current!,
+                initalDomClientRect: initalDomClientRect.current,
             });
             setTransferOrigin(newOrigin);
             setTranslate(newTranslatePosition);
@@ -70,7 +94,7 @@ export default function FullScreenView(props: FullScreenViewProps) {
                 mouseWheeling.current = false;
             }, 500);
         }
-    });
+    }, { wait: 80 });
 
     const clickDownMouseRelativeToNode = useRef<{ x: number; y: number } | null>(null);
     const clickDownNodeTranslate = useRef<{ x: number; y: number } | null>(null);
@@ -147,8 +171,8 @@ export default function FullScreenView(props: FullScreenViewProps) {
     }, [isDrag]);
 
     return (
-        <div id="wz_study-cover-layer" className={styles['cover-layer']}>
-            <div id="wz_study-operate-top-bar" className={styles['operate-top-bar']}>
+        <div id="wz-study_cover-layer" className={styles['cover-layer']}>
+            <div id="wz-study_operate-top-bar" className={styles['operate-top-bar']}>
                 <div className={styles['operate-top-bar-container']}>
                     <Typography.Text
                         strong
@@ -172,12 +196,13 @@ export default function FullScreenView(props: FullScreenViewProps) {
                     </div>
                 </div>
             </div>
-            <div id="wz_study-operate-area" className={styles['operate-area']}>
-                <div id="wz_study-move-area" className={styles['move-area']}>
+            <div id="wz-study_operate-area" className={styles['operate-area']}>
+                <div id="wz-study_move-area" className={styles['move-area']}>
                     <div
-                        id="wz_study-children-container"
+                        id="wz-study_children-container"
                         className={styles['children-container']}
                         style={{
+                            // ‼️只适配这种写法，实际浏览器计算会先从右往左计算
                             transform: `scale(${scale}) translateX(${translate.x}px) translateY(${translate.y}px)`,
                             transformOrigin: `${transferOrigin.x}px ${transferOrigin.y}px`,
                             cursor: isDrag ? 'grabbing' : 'grab',
